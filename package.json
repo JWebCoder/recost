@@ -1,0 +1,32 @@
+{
+  "name": "recost",
+  "version": "0.0.1",
+  "main": "lib/index.js",
+  "repository": "git@github.com:JWebCoder/recost.git",
+  "keywords": [
+    "js",
+    "react",
+    "context",
+    "state"
+  ],
+  "author": "João Moura <joao87moura@gmail.com> (https://github.com/JWebCoder)",
+  "license": "MIT",
+  "peerDependencies": {
+    "react": "^16.3.2"
+  },
+  "devDependencies": {
+    "babel-cli": "^6.26.0",
+    "babel-preset-react": "^6.24.1",
+    "babel-preset-stage-3": "^6.24.1",
+    "eslint": "^4.19.1",
+    "eslint-config-standard": "^11.0.0",
+    "eslint-plugin-import": "^2.11.0",
+    "eslint-plugin-node": "^6.0.1",
+    "eslint-plugin-promise": "^3.7.0",
+    "eslint-plugin-standard": "^3.1.0"
+  },
+  "scripts": {
+    "prepublish": "eslint src/*.js && yarn run babel-prepublish",
+    "babel-prepublish": "babel src/ -d lib"
+  }
+}
