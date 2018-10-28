@@ -18,12 +18,25 @@ let dispatch = () => {
   console.warn('Still no context created')
 }
 
+let combineReducers = (reducers) => {
+  return function (state, action) {
+    let newState = state
+    reducers.forEach(
+      function (reducer) {
+        newState = reducer(newState, action)
+      }
+    )
+    return newState
+  }
+}
+
 export {
   Context,
   Consumer,
   Provider,
   withState,
-  dispatch
+  dispatch,
+  combineReducers
 }
 
 const initContext = (initialState = {}, reducer, middleware = []) => {
