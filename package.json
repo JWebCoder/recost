@@ -29,7 +29,7 @@
     "eslint-plugin-standard": "^3.1.0"
   },
   "scripts": {
-    "prepublish": "eslint src/*.js && yarn run babel-prepublish",
+    "prepublish": "eslint src/*.js && npm run babel-prepublish",
     "babel-prepublish": "babel src/ -d lib"
   }
 }
