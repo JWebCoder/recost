@@ -94,6 +94,13 @@ export default App
 
 ## Using middleware
 
+### Available middleware
+
+[recost-persist](https://github.com/JWebCoder/recost-persist) - persist/hydrate state using localstorage
+[recost-logger](https://github.com/JWebCoder/recost-logger) - logs state changes when in development mode
+
+### Create your own
+
 In this example we have added two middleware functions.
 
 A **logger**, that will run **before** and **after** the state changes logging the changes.
