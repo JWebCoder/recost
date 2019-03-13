@@ -3,17 +3,21 @@ import React from 'react'
 let Context
 let Consumer
 let Provider
+
+// withState higher order component
 let withState = (select) => (Component) => (props) => {
   return (
     <Consumer>
       {state => {
         return select
-          ? <Component {...props} {...select(state)}/>
+          ? <Component {...props} {...select(state, props)}/>
           : <Component {...props} {...state}/>
       }}
     </Consumer>
   )
 }
+
+// dispatch, we create this function that will be updated once the context is created
 let dispatch = () => {
   console.warn('Still no context created')
 }
@@ -80,9 +84,6 @@ const initContext = (initialState = {}, reducer, middleware = []) => {
   }
 
   const before = (currentState, action, dispatcher) => {
-    if (process.env.NODE_ENV === 'development') {
-      console.group('Context action:', action.type)
-    }
     middleware.forEach(
       middleAction => {
         if (middleAction.before) {
@@ -101,9 +102,6 @@ const initContext = (initialState = {}, reducer, middleware = []) => {
         }
       }
     )
-    if (process.env.NODE_ENV === 'development') {
-      console.groupEnd()
-    }
     return afterState
   }
 
