@@ -17,9 +17,12 @@ let withState = (select) => (Component) => (props) => {
   )
 }
 
+const actionStack = []
+
 // dispatch, we create this function that will be updated once the context is created
-let dispatch = () => {
-  console.warn('Still no context created')
+let dispatch = (action) => {
+  actionStack.push(action)
+  console.warn('Still no context created, action pushed to stack')
 }
 
 let combineReducers = (reducers) => {
@@ -72,6 +75,21 @@ const initContext = (initialState = {}, reducer, middleware = []) => {
         ...initialState,
         dispatch: dispatcher
       }
+    }
+
+    componentDidMount () {
+      actionStack.forEach(
+        (action) => {
+          this.setState(
+            state => {
+              before(state, action, dispatch)
+              const newState = reducer(state, action, dispatch)
+              after(newState, action, dispatch)
+              return newState
+            }
+          )
+        }
+      )
     }
 
     render () {
