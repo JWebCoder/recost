@@ -4,6 +4,9 @@ let Context
 let Consumer
 let Provider
 
+// useSelector react hook
+const useSelector = (select) => select(React.useContext(Context))
+
 // withState higher order component
 let withState = (select) => (Component) => (props) => {
   return (
@@ -42,6 +45,7 @@ export {
   Consumer,
   Provider,
   withState,
+  useSelector,
   dispatch,
   combineReducers
 }
