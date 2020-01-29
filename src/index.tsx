@@ -12,7 +12,6 @@ export interface IBaseState {
 
 export default function<State>(
   initialState: State,
-  reducer: (state: State, action: IAction, dispatcher?: Dispatcher) => State,
   middlewares: Array<{
     before: (state: State, action: IAction, dispatcher?: Dispatcher) => void,
     after: (state: State, action: IAction, dispatcher?: Dispatcher) => void,
@@ -20,15 +19,15 @@ export default function<State>(
 ) {
   
   type Reducer = (state: State, action: IAction, dispatcher?: Dispatcher) => State
-  type CombineReducers = (reducers: Reducer[]) => Reducer
   type Selector = (state: State, props?: Props<any>) => Partial<State>;
 
   const actionStack: Array<IAction> = []
-
+  let reducer: Reducer
   let dispatch: Dispatcher = (action) => actionStack.push(action)
 
-  const combineReducers: CombineReducers = (reducers) => (state, action, dispatch) =>
-    reducers.reduce((newState, reducer) => reducer(newState, action, dispatch), state)
+  const combineReducers = (reducers: Reducer[]) => {
+    reducer = (state, action, dispatch) => reducers.reduce((newState, r) => r(newState, action, dispatch), state)
+  }
 
   const Context = React.createContext<State>({
     ...initialState,
