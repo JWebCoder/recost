@@ -1,7 +1,7 @@
 import React, { Component, PureComponent } from 'react'
 import logo from './logo.svg'
 import './App.css'
-import { dispatch, Provider, withState } from 'recost'
+import { dispatch, Provider, withState } from './recost'
 
 class Count extends PureComponent {
   render() {

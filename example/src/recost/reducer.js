@@ -1,5 +1,5 @@
 import { SUCCESS_COUNT, COUNT } from './actionTypes'
-import { combineReducers } from 'recost'
+import { combineReducers } from './index.js'
 
 const reducerOne = (state, action) => {
   if (action.type === SUCCESS_COUNT) {
