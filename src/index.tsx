@@ -2,12 +2,12 @@ import React, { Props, ReactElement, ComponentType, useEffect, useState } from '
 
 export interface IAction {
   type: string;
-  payload: any;
+  payload?: any;
   [key: string]: any;
 }
 export type Dispatcher = (action: IAction) => void
 export interface IBaseState {
-  dispatch: Dispatcher;
+  dispatch?: Dispatcher;
 }
 
 export default function<State>(
@@ -55,11 +55,14 @@ export default function<State>(
   }
 
   const runMiddlewares = (name: 'before' | 'after', state: State, action: IAction, dispatcher: Dispatcher) => {
-    middlewares.forEach((middleware) => middleware[name] && middleware[name](state, action, dispatcher))
+    middlewares.forEach((middleware) => {
+      const run = middleware[name]
+      run && run(state, action, dispatcher)
+    })
     return state
   }
 
-  const Provider: React.FC<{ children: ReactElement }> = ({ children }) => {
+  const Provider: React.FC<{ children: ReactElement | ReactElement[] }> = ({ children }) => {
 
     const [state, setState] = useState<State>({ ...initialState, dispatch })
     

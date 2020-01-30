@@ -1,9 +1,9 @@
-import recost from 'recost'
+import recost, { IBaseState } from 'recost'
 import * as logger from '../utils/logger'
 import * as callAPI from '../utils/callAPI'
 
-import reducerOne from './one'
-import reducerTwo from './two'
+import reducerOne, { IStateOne } from './one'
+import reducerTwo, { IStateTwo } from './two'
 
 const initialState = {
   count: 1
@@ -19,12 +19,14 @@ const middlewares = [
   callAPI
 ]
 
+export interface IState extends IStateOne, IStateTwo {} 
+
 const { 
   dispatch,
   withState,
   useSelector,
   Provider,
-} = recost(initialState, reducers, middlewares)
+} = recost<IState>(initialState, reducers, middlewares)
 
 export {
   withState,
