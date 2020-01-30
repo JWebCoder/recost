@@ -10,7 +10,7 @@ export interface IBaseState {
   dispatch?: Dispatcher;
 }
 
-export default function<State>(
+export default function<State extends IBaseState>(
   initialState: State,
   reducers: Array<(state: State, action: IAction, dispatcher?: Dispatcher) => State>,
   middlewares: Array<{
