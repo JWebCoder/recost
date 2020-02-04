@@ -15,7 +15,7 @@ export interface IProviderProps {
 
 export default function<State extends IBaseState>(
   initialState: State,
-  reducers: Array<(state: Partial<State>, action: IAction, dispatcher?: Dispatcher) => Partial<State>>,
+  reducers: Array<(state: any, action: IAction, dispatcher?: Dispatcher) => any>,
   middlewares: Array<{
     before?: (state: State, action: IAction, dispatcher?: Dispatcher) => void,
     after?: (state: State, action: IAction, dispatcher?: Dispatcher) => void,
@@ -66,13 +66,16 @@ export default function<State extends IBaseState>(
   }
 
   const Provider = class extends Component<IProviderProps, State> {
-    componentDidMount() {
-      dispatcher = (action: IAction) => this.setState((state) => {
+    state = {
+      ...initialState,
+      dispatcher: (action: IAction) => this.setState((state) => {
         runMiddlewares('before', state, action, dispatch)
         const newState = reducer(state, action, dispatch)
         runMiddlewares('after', newState, action, dispatch)
         return newState
       })
+    }
+    componentDidMount() {
       actionStack.forEach(dispatch) 
     }
     render() {
