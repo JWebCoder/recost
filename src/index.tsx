@@ -1,4 +1,4 @@
-import React, { Props, ReactElement, ComponentType, Component } from 'react'
+import React, { Props, ReactElement, ComponentType, Component, useState } from 'react'
 
 export interface IAction {
   type: string;
@@ -14,6 +14,11 @@ export interface IProviderProps {
 }
 
 type Reducer = (state: any, action: IAction, dispatcher: Dispatcher) => any;
+
+const useForceUpdate = () => {
+  const setState = useState(true)[1]
+  return () => setState((n) => !n)
+}
 
 export default function<State extends IBaseState>(
   initialState: State,
@@ -48,7 +53,8 @@ export default function<State extends IBaseState>(
   const Consumer = Context.Consumer
 
   const useSelector = function<PartialState>(select: Selector<PartialState>) {
-    return select(React.useContext(Context))
+    const context = React.useContext(Context)
+    return select(context)
   }
   
   const withState = function<PartialState>(select: Selector<PartialState>){
