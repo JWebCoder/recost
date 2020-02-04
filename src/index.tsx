@@ -15,7 +15,7 @@ export interface IProviderProps {
 
 export default function<State extends IBaseState>(
   initialState: State,
-  reducers: Array<(state: State, action: IAction, dispatcher?: Dispatcher) => State>,
+  reducers: Array<(state: Partial<State>, action: IAction, dispatcher?: Dispatcher) => Partial<State>>,
   middlewares: Array<{
     before?: (state: State, action: IAction, dispatcher?: Dispatcher) => void,
     after?: (state: State, action: IAction, dispatcher?: Dispatcher) => void,
@@ -31,7 +31,7 @@ export default function<State extends IBaseState>(
   const actionStack: Array<IAction> = []
   
   const reducer: Reducer = (state, action, dispatch) => (
-    reducers.reduce((newState, r) => r(newState, action, dispatch), state)
+    reducers.reduce((newState, r) => (r(newState, action, dispatch) as State), state)
   )
   
   const dispatch: Dispatcher = (action) => dispatcher(action)
