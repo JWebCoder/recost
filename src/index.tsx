@@ -13,9 +13,11 @@ export interface IProviderProps {
   children: ReactElement | ReactElement[];
 }
 
+type Reducer = (state: any, action: IAction, dispatcher: Dispatcher) => any;
+
 export default function<State extends IBaseState>(
   initialState: State,
-  reducers: Array<(state: any, action: IAction, dispatcher?: Dispatcher) => any>,
+  reducers: Array<Reducer>,
   middlewares: Array<{
     before?: (state: State, action: IAction, dispatcher?: Dispatcher) => void,
     after?: (state: State, action: IAction, dispatcher?: Dispatcher) => void,
@@ -25,12 +27,12 @@ export default function<State extends IBaseState>(
     actionStack.push(action)
   }
 
-  type Reducer = (state: State, action: IAction, dispatcher?: Dispatcher) => State
-  type Selector = (state: State, props?: Props<any>) => Partial<State>;
+  type MergedReducer = (state: State, action: IAction, dispatcher?: Dispatcher) => State
+  type Selector<PartialState> = (state: State, props?: Props<any>) => PartialState;
 
   const actionStack: Array<IAction> = []
   
-  const reducer: Reducer = (state, action, dispatch) => (
+  const reducer: MergedReducer = (state, action, dispatch) => (
     reducers.reduce((newState, r) => (r(newState, action, dispatch) as State), state)
   )
   
@@ -45,10 +47,12 @@ export default function<State extends IBaseState>(
   
   const Consumer = Context.Consumer
 
-  const useSelector = (select: Selector) => select(React.useContext(Context))
+  const useSelector = function<PartialState>(select: Selector<PartialState>) {
+    return select(React.useContext(Context))
+  }
   
-  const withState = (select: Selector) => (Comp: ComponentType<any>) => (props: Props<any>) => {
-    return (
+  const withState = function<PartialState>(select: Selector<PartialState>){
+    return (Comp: ComponentType<any>) => (props: Props<any>) => (
       <Consumer>
         {(state: State) => (
           <Comp {...props} {...(select ? select(state, props) : {})} />
