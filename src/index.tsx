@@ -1,4 +1,4 @@
-import React, { Props, ReactElement, ComponentType, useEffect, useState } from 'react'
+import React, { Props, ReactElement, ComponentType, Component } from 'react'
 
 export interface IAction {
   type: string;
@@ -8,6 +8,9 @@ export interface IAction {
 export type Dispatcher = (action: IAction) => void
 export interface IBaseState {
   dispatch?: Dispatcher;
+}
+export interface IProviderProps {
+  children: ReactElement | ReactElement[];
 }
 
 export default function<State extends IBaseState>(
@@ -62,24 +65,23 @@ export default function<State extends IBaseState>(
     return state
   }
 
-  const Provider: React.FC<{ children: ReactElement | ReactElement[] }> = ({ children }) => {
-
-    const [state, setState] = useState<State>({ ...initialState, dispatch })
-    
-    dispatcher = (action: IAction) => setState((state) => {
-      runMiddlewares('before', state, action, dispatch)
-      const newState = reducer(state, action, dispatch)
-      runMiddlewares('after', newState, action, dispatch)
-      return newState
-    })
-    
-    useEffect(() => actionStack.forEach(dispatch), [])
-    
-    return (
-      <Context.Provider value={state}>
-        {children}
-      </Context.Provider>
-    )
+  const Provider = class extends Component<IProviderProps, State> {
+    componentDidMount() {
+      dispatcher = (action: IAction) => this.setState((state) => {
+        runMiddlewares('before', state, action, dispatch)
+        const newState = reducer(state, action, dispatch)
+        runMiddlewares('after', newState, action, dispatch)
+        return newState
+      })
+      actionStack.forEach(dispatch) 
+    }
+    render() {
+      return (
+        <Context.Provider value={this.state}>
+          {this.props.children}
+        </Context.Provider>
+      )
+    }
   }
   return { Provider, withState, useSelector, dispatch }
 }
