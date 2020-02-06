@@ -15,11 +15,6 @@ export interface IProviderProps {
 
 type Reducer = (state: any, action: IAction, dispatcher: Dispatcher) => any;
 
-const useForceUpdate = () => {
-  const setState = useState(true)[1]
-  return () => setState((n) => !n)
-}
-
 export default function<State extends IBaseState>(
   initialState: State,
   reducers: Array<Reducer>,
@@ -78,15 +73,16 @@ export default function<State extends IBaseState>(
   const Provider = class extends Component<IProviderProps, State> {
     state = {
       ...initialState,
-      dispatcher: (action: IAction) => this.setState((state) => {
+    }
+    componentDidMount() {
+      dispatcher = (action: IAction) => this.setState((state) => {
         runMiddlewares('before', state, action, dispatch)
         const newState = reducer(state, action, dispatch)
         runMiddlewares('after', newState, action, dispatch)
         return newState
       })
-    }
-    componentDidMount() {
       actionStack.forEach(dispatch) 
+      this.setState({ ...initialState, dispatcher })
     }
     render() {
       return (
