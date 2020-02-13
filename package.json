@@ -32,10 +32,9 @@
     "typescript": "^3.7.5"
   },
   "scripts": {
-    "lint": "eslint src/*.{tsx,ts}",
+    "lint": "eslint src/*.tsx",
     "clean": "rm -rf lib/ && mkdir -p lib/",
     "build": "tsc",
     "prepublish": "npm run lint && npm run build"
-  },
-  "dependencies": {}
+  }
 }
