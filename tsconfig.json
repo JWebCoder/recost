@@ -1,0 +1,13 @@
+{
+  "compilerOptions": {
+    "outDir": "./lib",
+    "allowSyntheticDefaultImports": true,
+    "jsx": "react",
+    "declaration": true,
+    "target": "es2015",
+    "skipLibCheck": true
+  },
+  "include": [
+    "src",
+  ]
+}

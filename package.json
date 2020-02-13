@@ -15,21 +15,27 @@
   "author": "João Moura <joao87moura@gmail.com> (https://github.com/JWebCoder)",
   "license": "MIT",
   "peerDependencies": {
-    "react": "^16.3.2"
+    "react": "^16.8.2"
   },
   "devDependencies": {
-    "babel-cli": "^6.26.0",
-    "babel-preset-react": "^6.24.1",
-    "babel-preset-stage-3": "^6.24.1",
-    "eslint": "^6.1.0",
-    "eslint-config-standard": "^11.0.0",
-    "eslint-plugin-import": "^2.18.2",
-    "eslint-plugin-node": "^6.0.1",
-    "eslint-plugin-promise": "^3.8.0",
-    "eslint-plugin-standard": "^3.1.0"
+    "@types/react": "^16.9.19",
+    "@typescript-eslint/eslint-plugin": "^2.18.0",
+    "@typescript-eslint/parser": "^2.18.0",
+    "eslint": "^6.8.0",
+    "eslint-config-react-app": "^5.1.0",
+    "eslint-import-resolver-typescript": "^2.0.0",
+    "eslint-plugin-flowtype": "^4.6.0",
+    "eslint-plugin-import": "^2.20.0",
+    "eslint-plugin-jsx-a11y": "^6.2.3",
+    "eslint-plugin-react": "^7.18.0",
+    "eslint-plugin-react-hooks": "^2.3.0",
+    "typescript": "^3.7.5"
   },
   "scripts": {
-    "prepublish": "eslint src/*.js && npm run babel-prepublish",
-    "babel-prepublish": "babel src/ -d lib"
-  }
+    "lint": "eslint src/*.{tsx,ts}",
+    "clean": "rm -rf lib/ && mkdir -p lib/",
+    "build": "tsc",
+    "prepublish": "npm run lint && npm run build"
+  },
+  "dependencies": {}
 }
