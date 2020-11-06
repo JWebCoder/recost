@@ -1,4 +1,4 @@
-import recost, { IBaseState } from 'recost'
+import recost from 'recost'
 import * as logger from '../utils/logger'
 import * as callAPI from '../utils/callAPI'
 
