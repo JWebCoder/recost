@@ -1,4 +1,5 @@
-import React, { Props, ReactElement, ComponentType, Component } from 'react'
+import * as React from 'react'
+import { Props, ReactElement, ComponentType, Component } from 'react'
 
 export interface IAction {
   type: string;
