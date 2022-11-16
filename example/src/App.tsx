@@ -1,26 +1,25 @@
-import React from 'react';
-import logo from './logo.svg';
+import React, { useCallback } from 'react';
 import './App.css';
 
 import { dispatch, Provider } from './reducers'
 
 import Count from './Count'
 
-const App: React.FC = () => {
-
-  const onClickButtonAPI = () => {
+function App() {
+  
+  const onClickButtonAPI = useCallback(() => {
     dispatch({ type: 'COUNT_API' })
-  }
-  const onClickButton = () => {
+  }, [])
+  
+  const onClickButton = useCallback(() => {
     dispatch({ type: 'COUNT' })
-  }
+  }, [])
 
   return (
     <div className="App">
       <div className="withProvider">
           <Provider>
             <header className="App-header">
-              <img src={logo} className="App-logo" alt="logo" />
               <h1 className="App-title">Content inside provider</h1>
             </header>
             <Count/>
