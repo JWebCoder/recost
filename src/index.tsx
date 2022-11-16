@@ -1,5 +1,5 @@
 import * as React from 'react'
-import { Props, ReactElement, ComponentType, Component } from 'react'
+import { ReactElement, ComponentType, Component } from 'react'
 
 export interface IAction {
   type: string;
@@ -29,7 +29,7 @@ export default function<State extends IBaseState>(
   }
 
   type MergedReducer = (state: State, action: IAction, dispatcher?: Dispatcher) => State
-  type Selector<PartialState> = (state: State, props?: Props<any>) => PartialState;
+  type Selector<PartialState> = (state: State, props?: any) => PartialState;
 
   const actionStack: Array<IAction> = []
   
@@ -41,7 +41,7 @@ export default function<State extends IBaseState>(
   
   const Context = React.createContext<State>({
     ...initialState,
-    dispatch: (action: IAction) => {
+    dispatch: () => {
       console.warn('Please add a Provider to your application first')
     }
   })
@@ -54,7 +54,7 @@ export default function<State extends IBaseState>(
   }
   
   const withState = function<PartialState>(select: Selector<PartialState>){
-    return (Comp: ComponentType<any>) => (props: Props<any>) => (
+    return (Comp: ComponentType<any>) => (props: any) => (
       <Consumer>
         {(state: State) => (
           <Comp {...props} {...(select ? select(state, props) : {})} />
